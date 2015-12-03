@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Jeu Star Wars</title>
+  <style>
+  #boutons {
+    text-align: center;
+  }
+  button {
+    width: 100px;
+    height: 40px;
+    margin: 30px;
+  }
+  #canvas {
+    /*background-color: lightgrey;*/
+    margin-right: 14%;
+    float: right;
+  }
+  li {
+    list-style-type: none;
+  }
+  #instructions {
+    margin-top: 10%;
+    border: 1px solid black;
+    width : 30%;
+    text-align: center;
+  }
+  #timer, #score {
+    width : 30%;
+    border: 1px solid black;
+    text-align: center;
+    font-size: 2em;
+  }
+  </style>
+
+</head>
+<body>
+  <div id = "boutons">
+  <button type = "button" id = "start" onclick = "go()">START</button>
+  <button type = "button" id = "stop" onclick = "arret()">STOP</button>
+</div>
+  <canvas id="canvas" width="600" height="400"></canvas>
+
+  <div id="instructions">
+    <ul>
+      <li>Utilise les 4 flèches du clavier pour te déplacer :</li>
+      <li> en haut </li>
+      <li> à droite </li>
+      <li> en bas </li>
+      <li> à gauche </li>
+    </ul>
+  </div>
+  <div id="timer"></div>
+  <div id="score">bliblinloa</div>
+
+
+  <script type="text/javascript" src="canvasJB.js">
+  </script>
+</body>
+</html>
