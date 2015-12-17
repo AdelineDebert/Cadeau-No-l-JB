@@ -35,14 +35,22 @@ var backgroundImg = new Image();
 backgroundImg.src = "spaceBG.jpg";
 var vaisseauImg = new Image();
 vaisseauImg.src = "vaisseau.png";
+var tieFighterImg = new Image();
+tieFighterImg.src = "tie_fighter.png";
+var deathStarImg = new Image();
+deathStarImg.src = "death_star.png";
 
 var render = window.onload = function(){
-ctx.drawImage(backgroundImg, 0, 0);
-for (var missile in missiles){
-ctx.fillStyle = "white";
-ctx.fillRect(missiles[missile].x, missiles[missile].y, 5, 2);
-};
-ctx.drawImage(vaisseauImg, vaisseau.x, vaisseau.y);
+  ctx.drawImage(backgroundImg, 0, 0);
+  ctx.drawImage(vaisseauImg, vaisseau.x, vaisseau.y);
+  ctx.drawImage(tieFighterImg, tieFighters.x, tieFighters.y);
+  tieFighters.x -= tieFighters.speed;
+  ctx.drawImage(deathStarImg, deathStar.x, deathStar.y);
+  deathStar.x -= deathStar.speed;
+  for (var missile in missiles){
+    ctx.fillStyle = "#39FF02";
+    ctx.fillRect(missiles[missile].x, missiles[missile].y, 5, 2);
+  };
 };
 
 var vaisseau = {
@@ -51,12 +59,38 @@ var vaisseau = {
   speed: 256
 };
 
+var tieFighters = {x:650, y: Math.floor((Math.random()*360)), speed: 2};
+
+
+var deathStar = {
+  x: 800,
+  y: 100,
+  speed: 1
+}
+
 var missiles =  [];
-var intervalMissile ;
+var intervalMissiles = [];
 var toucheAppuyee = {};
 
+
 addEventListener("keydown", function(e){
-  toucheAppuyee[e.keyCode] = true;
+  if (e.keyCode === 32) {
+    var missile = {x: vaisseau.x + 15, y: vaisseau.y + 15, speed: 5};
+    missiles.push(missile);
+    console.log("numMissile ", missiles);
+    var  intervalMissile = setInterval(function(){
+      missile.x += missile.speed;
+      if (missile.x > 600) {
+        console.log ("interval missiles : ", intervalMissiles, intervalMissiles[intervalMissiles.indexOf(intervalMissile)]);
+        clearInterval(intervalMissiles[intervalMissiles.indexOf(intervalMissile)]);
+        intervalMissiles.splice(intervalMissiles.indexOf(intervalMissile), 1);
+        missiles.splice(missile, 1);
+      }
+    }, 16)
+    intervalMissiles.push(intervalMissile);
+  } else {
+    toucheAppuyee[e.keyCode] = true;
+  }
 });
 addEventListener("keyup", function(e){
   delete toucheAppuyee[e.keyCode];
@@ -75,29 +109,7 @@ function update(modifier) {
   if ((37 in toucheAppuyee) && (vaisseau.x > 0)) {
     vaisseau.x -= vaisseau.speed * modifier;
   }
-  if (32 in toucheAppuyee) {
-    missiles.push({x: vaisseau.x,y: vaisseau.y,speed: 5});
-
-      if (! intervalMissile){
-        missiles[0].y = vaisseau.y;
-        // missile.x = vaisseau.x;
-        intervalMissile = setInterval(function(){
-          missiles[0].x += missiles[0].speed;
-          if (missiles[0].x > 600) {
-            clearInterval(intervalMissile);
-            console.log("interval missile : ", intervalMissile);
-            intervalMissile = null;
-            missiles[0].x = vaisseau.x;
-            missiles[0].y = vaisseau.y;
-            // console.log("missile.x :", missiles.x);
-            // console.log("vaisseau.x :", vaisseau.x);
-          }
-        }, 16)
-        console.log("interval missile",intervalMissile);
-      }
-    }
 };
-
 
 function main(){
   var now = Date.now();
